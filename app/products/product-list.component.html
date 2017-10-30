@@ -1,0 +1,47 @@
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        {{pageTitle}}
+    </div>
+    <div class="panel-body">
+        
+        <div class="row">
+            <button class="btn btn-success" (click)="toggleGrid()" >
+                <span class="glyphicon glyphicon-th-list" *ngIf='showGrid'></span>
+                <span class="glyphicon glyphicon-th-large" *ngIf='showList'></span>
+            </button>
+            <div class="col-md-2">Filter By</div>
+            <div class="col-md-6"><input type="text" [(ngModel)]='listFilter'></div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">Filtered by:{{listFilter}}</div>
+        </div>
+        <div class="table-responsive" *ngIf='showGrid'>
+            <table class="table" *ngIf='products && products.length'>
+                <tr>
+                    <th><button class="btn btn-primary" (click)="toggleImage()">{{showImage?'Hide Image':'Show Image'}}</button></th>
+                    <th>Product</th> 
+                    <th>Code</th>
+                    <th>Available Date</th> 
+                    <th>Price</th>
+                    <th>Rating</th>
+                </tr>
+                <tr *ngFor='let product of products |productFilter:listFilter'>
+                    <td><img *ngIf='showImage' [src]='product.imageUrl' [style.width.px]='imageWidth'></td>
+                    <td>{{product.productName|uppercase}}</td>
+                    <td>{{product.productCode}}</td>
+                    <td>{{product.releaseDate}}</td>
+                    <td>{{product.price|currency:'INR':true}}</td>
+                    <td><star-transform [rating]='product.starRating' (ratingClicked)='onRatingClicked($event)'></star-transform></td>
+                </tr>
+            </table>
+        </div>
+        <div *ngIf='showList'>
+            <ul class="list-group" *ngFor='let product of products |productFilter:listFilter'>
+                <li class="list-group-item list-group-item-info">Name: {{product.productName|uppercase}}</li>
+                <li class="list-group-item list-group-item-success">Code: {{product.productCode}}</li>
+                <li class="list-group-item list-group-item-warning">Date: {{product.releaseDate}}</li>
+                <li class="list-group-item list-group-item-danger">Price {{product.price}}</li>
+            </ul>
+        </div>
+    </div>
+</div>
